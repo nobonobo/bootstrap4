@@ -9,9 +9,10 @@ import (
 // Badge ...
 type Badge struct {
 	vecty.Core
-	Kind     Kind
-	Pill     bool
-	Children vecty.MarkupOrChild
+	Kind     Kind                `vecty:"prop"`
+	Pill     bool                `vecty:"prop"`
+	Markup   vecty.MarkupList    `vecty:"prop"`
+	Children vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
@@ -23,6 +24,7 @@ func (c *Badge) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.Kind) > 0, vecty.Class("badge-"+c.Kind.String())),
 			vecty.MarkupIf(c.Pill, vecty.Class("badge-pill")),
 		),
+		c.Markup,
 		c.Children,
 	)
 }
@@ -30,10 +32,11 @@ func (c *Badge) Render() vecty.ComponentOrHTML {
 // BadgeLinks ...
 type BadgeLinks struct {
 	vecty.Core
-	Kind     Kind
-	Href     string
-	Pill     bool
-	Children vecty.MarkupOrChild
+	Kind     Kind                `vecty:"prop"`
+	Href     string              `vecty:"prop"`
+	Pill     bool                `vecty:"prop"`
+	Markup   vecty.MarkupList    `vecty:"prop"`
+	Children vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
@@ -46,6 +49,7 @@ func (c *BadgeLinks) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(c.Pill, vecty.Class("badge-pill")),
 			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
 		),
+		c.Markup,
 		c.Children,
 	)
 }

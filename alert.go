@@ -17,9 +17,6 @@ type Alert struct {
 
 // Render ...
 func (c *Alert) Render() vecty.ComponentOrHTML {
-	if len(c.Kind) == 0 {
-		c.Kind = KindPrimary
-	}
 	return elem.Div(
 		vecty.Markup(
 			vecty.ClassMap{
