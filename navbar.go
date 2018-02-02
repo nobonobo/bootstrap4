@@ -11,6 +11,7 @@ import (
 // Navbar ...
 type Navbar struct {
 	vecty.Core
+	ID          string                `vecty:"prop"`
 	Size        Size                  `vecty:"prop"`
 	Expand      bool                  `vecty:"prop"`
 	Light       bool                  `vecty:"prop"`
@@ -26,6 +27,7 @@ type Navbar struct {
 func (c *Navbar) Render() vecty.ComponentOrHTML {
 	return elem.Navigation(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"navbar":                           true,
 				"navbar-" + c.Size.String():        !c.Expand,
@@ -47,6 +49,7 @@ func (c *Navbar) Render() vecty.ComponentOrHTML {
 // NavbarToggler ...
 type NavbarToggler struct {
 	vecty.Core
+	ID     string           `vecty:"prop"`
 	Type   prop.InputType   `vecty:"prop"`
 	Target string           `vecty:"prop"`
 	Light  bool             `vecty:"prop"`
@@ -58,6 +61,7 @@ type NavbarToggler struct {
 func (c *NavbarToggler) Render() vecty.ComponentOrHTML {
 	return elem.Button(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"navbar-toggler": true,
 				"bg-light":       c.Light,
@@ -90,6 +94,7 @@ type NavbarCollapse struct {
 func (c *NavbarCollapse) Render() vecty.ComponentOrHTML {
 	return elem.Button(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"navbar-collapse": true,
 				"collapse":        true,
@@ -98,7 +103,28 @@ func (c *NavbarCollapse) Render() vecty.ComponentOrHTML {
 				"bg-dark":         c.Dark,
 				"navbar-dark":     c.Dark,
 			},
-			prop.ID(c.ID),
+		),
+		c.Markup,
+		c.Children,
+	)
+}
+
+// NavbarNav ...
+type NavbarNav struct {
+	vecty.Core
+	ID       string                `vecty:"prop"`
+	Markup   vecty.MarkupList      `vecty:"prop"`
+	Children vecty.ComponentOrHTML `vecty:"prop"`
+}
+
+// Render ...
+func (c *NavbarNav) Render() vecty.ComponentOrHTML {
+	return elem.UnorderedList(
+		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
+			vecty.ClassMap{
+				"navbar-nav": true,
+			},
 		),
 		c.Markup,
 		c.Children,

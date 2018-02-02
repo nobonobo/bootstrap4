@@ -9,6 +9,7 @@ import (
 // DropdownMenu ...
 type DropdownMenu struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	For      string                `vecty:"prop"`
 	Right    bool                  `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
@@ -19,11 +20,11 @@ type DropdownMenu struct {
 func (c *DropdownMenu) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"dropdown-menu":       true,
 				"dropdown-menu-right": c.Right,
 			},
-			vecty.Attribute("aria-labelledby", c.For),
 		),
 		c.Markup,
 		c.Children,
@@ -52,6 +53,7 @@ type DropdownLinkItem struct {
 func (c *DropdownLinkItem) Render() vecty.ComponentOrHTML {
 	return elem.Anchor(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
 			vecty.Class("dropdown-item"),
 		),
@@ -71,6 +73,7 @@ type DropdownHeader struct {
 func (c *DropdownHeader) Render() vecty.ComponentOrHTML {
 	return elem.Heading6(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("dropdown-header"),
 		),
 		c.Markup,

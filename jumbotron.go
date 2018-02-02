@@ -8,6 +8,7 @@ import (
 // Jumbotron ...
 type Jumbotron struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Fluid    bool                  `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`

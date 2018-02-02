@@ -9,6 +9,7 @@ import (
 // FormGroup ...
 type FormGroup struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -25,6 +26,7 @@ func (c *FormGroup) Render() vecty.ComponentOrHTML {
 // FormCheck ...
 type FormCheck struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -41,6 +43,7 @@ func (c *FormCheck) Render() vecty.ComponentOrHTML {
 // Label ...
 type Label struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	For      string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
@@ -79,8 +82,8 @@ type Input struct {
 func (c *Input) Render() vecty.ComponentOrHTML {
 	return elem.Input(
 		vecty.Markup(
-			vecty.MarkupIf(len(c.Type) > 0, prop.Type(c.Type)),
 			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
+			vecty.MarkupIf(len(c.Type) > 0, prop.Type(c.Type)),
 			vecty.MarkupIf(len(c.Name) > 0, vecty.Attribute("name", c.Name)),
 			vecty.MarkupIf(len(c.Value) > 0, prop.Value(c.Value)),
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
@@ -110,8 +113,8 @@ func (c *Input) Render() vecty.ComponentOrHTML {
 // CheckInput ...
 type CheckInput struct {
 	vecty.Core
-	Type     prop.InputType        `vecty:"prop"`
 	ID       string                `vecty:"prop"`
+	Type     prop.InputType        `vecty:"prop"`
 	Name     string                `vecty:"prop"`
 	Checked  bool                  `vecty:"prop"`
 	Title    string                `vecty:"prop"`
@@ -128,15 +131,9 @@ type CheckInput struct {
 func (c *CheckInput) Render() vecty.ComponentOrHTML {
 	return elem.Input(
 		vecty.Markup(
-			vecty.MarkupIf(len(c.Type) > 0,
-				prop.Type(c.Type),
-			),
-			vecty.MarkupIf(len(c.ID) > 0,
-				vecty.Attribute("id", c.ID),
-			),
-			vecty.MarkupIf(len(c.Name) > 0,
-				vecty.Attribute("name", c.Name),
-			),
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
+			vecty.MarkupIf(len(c.Type) > 0, prop.Type(c.Type)),
+			vecty.MarkupIf(len(c.Name) > 0, vecty.Attribute("name", c.Name)),
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
@@ -177,12 +174,8 @@ type TextArea struct {
 func (c *TextArea) Render() vecty.ComponentOrHTML {
 	return elem.TextArea(
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0,
-				vecty.Attribute("id", c.ID),
-			),
-			vecty.MarkupIf(len(c.Name) > 0,
-				vecty.Attribute("name", c.Name),
-			),
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
+			vecty.MarkupIf(len(c.Name) > 0, vecty.Attribute("name", c.Name)),
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
@@ -224,12 +217,8 @@ type Select struct {
 func (c *Select) Render() vecty.ComponentOrHTML {
 	return elem.Select(
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0,
-				vecty.Attribute("id", c.ID),
-			),
-			vecty.MarkupIf(len(c.Name) > 0,
-				vecty.Attribute("name", c.Name),
-			),
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
+			vecty.MarkupIf(len(c.Name) > 0, vecty.Attribute("name", c.Name)),
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
@@ -237,12 +226,8 @@ func (c *Select) Render() vecty.ComponentOrHTML {
 				"form-control-lg": c.Large,
 				"form-control-sm": c.Small,
 			},
-			vecty.MarkupIf(c.Multiple,
-				vecty.Attribute("multiple", ""),
-			),
-			vecty.MarkupIf(c.Readonly,
-				vecty.Attribute("readonly", ""),
-			),
+			vecty.MarkupIf(c.Multiple, vecty.Attribute("multiple", "")),
+			vecty.MarkupIf(c.Readonly, vecty.Attribute("readonly", "")),
 		),
 		c.Markup,
 		c.Children,

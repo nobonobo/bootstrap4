@@ -8,6 +8,7 @@ import (
 // Progress ...
 type Progress struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Height   string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
@@ -28,6 +29,7 @@ func (c *Progress) Render() vecty.ComponentOrHTML {
 // ProgressBar ...
 type ProgressBar struct {
 	vecty.Core
+	ID             string                `vecty:"prop"`
 	BackgroundKind Kind                  `vecty:"prop"`
 	Width          string                `vecty:"prop"`
 	Striped        bool                  `vecty:"prop"`

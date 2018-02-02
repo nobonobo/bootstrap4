@@ -3,11 +3,13 @@ package bootstrap4
 import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
+	"github.com/gopherjs/vecty/prop"
 )
 
 // ButtonToolbar ...
 type ButtonToolbar struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -16,6 +18,7 @@ type ButtonToolbar struct {
 func (c *ButtonToolbar) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("btn-toolbar"),
 			vecty.Attribute("role", "toolbar"),
 		),
@@ -27,6 +30,7 @@ func (c *ButtonToolbar) Render() vecty.ComponentOrHTML {
 // ButtonGroup ...
 type ButtonGroup struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Large    bool                  `vecty:"prop"`
 	Small    bool                  `vecty:"prop"`
 	Vertical bool                  `vecty:"prop"`
@@ -39,6 +43,7 @@ type ButtonGroup struct {
 func (c *ButtonGroup) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"btn-group":          !c.Vertical,
 				"btn-group-virtical": c.Vertical,
@@ -56,6 +61,7 @@ func (c *ButtonGroup) Render() vecty.ComponentOrHTML {
 // InputGroup ...
 type InputGroup struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Large    bool                  `vecty:"prop"`
 	Small    bool                  `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
@@ -66,6 +72,7 @@ type InputGroup struct {
 func (c *InputGroup) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"input-group":    true,
 				"input-group-lg": c.Large,
@@ -81,6 +88,7 @@ func (c *InputGroup) Render() vecty.ComponentOrHTML {
 // InputGroupPrepend ...
 type InputGroupPrepend struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -89,6 +97,7 @@ type InputGroupPrepend struct {
 func (c *InputGroupPrepend) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"input-group-prepend": true,
 			},
@@ -101,6 +110,7 @@ func (c *InputGroupPrepend) Render() vecty.ComponentOrHTML {
 // InputGroupAppend ...
 type InputGroupAppend struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -109,6 +119,7 @@ type InputGroupAppend struct {
 func (c *InputGroupAppend) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"input-group-append": true,
 			},
@@ -121,6 +132,7 @@ func (c *InputGroupAppend) Render() vecty.ComponentOrHTML {
 // InputGroupText ...
 type InputGroupText struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -129,6 +141,7 @@ type InputGroupText struct {
 func (c *InputGroupText) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"input-group-text": true,
 			},

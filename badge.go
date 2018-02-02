@@ -9,6 +9,7 @@ import (
 // Badge ...
 type Badge struct {
 	vecty.Core
+	ID       string              `vecty:"prop"`
 	Kind     Kind                `vecty:"prop"`
 	Pill     bool                `vecty:"prop"`
 	Markup   vecty.MarkupList    `vecty:"prop"`
@@ -19,6 +20,7 @@ type Badge struct {
 func (c *Badge) Render() vecty.ComponentOrHTML {
 	return elem.Span(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("badge"),
 			vecty.MarkupIf(len(c.Kind) == 0, vecty.Class("badge-"+KindPrimary.String())),
 			vecty.MarkupIf(len(c.Kind) > 0, vecty.Class("badge-"+c.Kind.String())),
@@ -32,6 +34,7 @@ func (c *Badge) Render() vecty.ComponentOrHTML {
 // BadgeLinks ...
 type BadgeLinks struct {
 	vecty.Core
+	ID       string              `vecty:"prop"`
 	Kind     Kind                `vecty:"prop"`
 	Href     string              `vecty:"prop"`
 	Pill     bool                `vecty:"prop"`
@@ -43,6 +46,7 @@ type BadgeLinks struct {
 func (c *BadgeLinks) Render() vecty.ComponentOrHTML {
 	return elem.Anchor(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("badge"),
 			vecty.MarkupIf(len(c.Kind) == 0, vecty.Class("badge-"+KindPrimary.String())),
 			vecty.MarkupIf(len(c.Kind) > 0, vecty.Class("badge-"+c.Kind.String())),

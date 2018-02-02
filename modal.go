@@ -58,6 +58,7 @@ func (c *ModalDialog) Render() vecty.ComponentOrHTML {
 // ModalContent ...
 type ModalContent struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -66,6 +67,7 @@ type ModalContent struct {
 func (c *ModalContent) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("modal-content"),
 		),
 		c.Markup,
@@ -76,6 +78,7 @@ func (c *ModalContent) Render() vecty.ComponentOrHTML {
 // ModalHeader ...
 type ModalHeader struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -84,6 +87,7 @@ type ModalHeader struct {
 func (c *ModalHeader) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("modal-header"),
 		),
 		c.Markup,
@@ -94,6 +98,7 @@ func (c *ModalHeader) Render() vecty.ComponentOrHTML {
 // ModalBody ...
 type ModalBody struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -102,6 +107,7 @@ type ModalBody struct {
 func (c *ModalBody) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("modal-body"),
 		),
 		c.Markup,
@@ -112,6 +118,7 @@ func (c *ModalBody) Render() vecty.ComponentOrHTML {
 // ModalFooter ...
 type ModalFooter struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }
@@ -120,6 +127,7 @@ type ModalFooter struct {
 func (c *ModalFooter) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("modal-footer"),
 		),
 		c.Markup,

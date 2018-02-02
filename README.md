@@ -118,8 +118,8 @@ logging only
 - [x] Jumbotron
 - [x] List group
 - [x] Modal
-- [ ] Navs
-- [ ] Navbar
+- [x] Navs
+- [x] Navbar
 - [ ] Pagination
 - [x] Popovers
 - [x] Progress
