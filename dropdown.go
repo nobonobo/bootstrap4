@@ -44,6 +44,7 @@ func (c *DropdownDivider) Render() vecty.ComponentOrHTML {
 // DropdownLinkItem ...
 type DropdownLinkItem struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Href     string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
@@ -65,6 +66,7 @@ func (c *DropdownLinkItem) Render() vecty.ComponentOrHTML {
 // DropdownHeader ...
 type DropdownHeader struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
 	Children vecty.ComponentOrHTML `vecty:"prop"`
 }

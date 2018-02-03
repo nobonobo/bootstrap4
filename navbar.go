@@ -30,8 +30,8 @@ func (c *Navbar) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"navbar":                           true,
-				"navbar-" + c.Size.String():        !c.Expand,
-				"navbar-expand-" + c.Size.String(): c.Expand,
+				"navbar-" + c.Size.String():        !c.Expand && len(c.Size) > 0,
+				"navbar-expand-" + c.Size.String(): c.Expand && len(c.Size) > 0,
 				"bg-light":                         c.Light,
 				"navbar-light":                     c.Light,
 				"bg-dark":                          c.Dark,
@@ -62,6 +62,7 @@ func (c *NavbarToggler) Render() vecty.ComponentOrHTML {
 	return elem.Button(
 		vecty.Markup(
 			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
+			vecty.MarkupIf(len(c.Type) > 0, prop.Type(c.Type)),
 			vecty.ClassMap{
 				"navbar-toggler": true,
 				"bg-light":       c.Light,
@@ -69,9 +70,8 @@ func (c *NavbarToggler) Render() vecty.ComponentOrHTML {
 				"bg-dark":        c.Dark,
 				"navbar-dark":    c.Dark,
 			},
-			prop.Type(c.Type),
 			vecty.Data("toggle", "collapse"),
-			vecty.Data("target", c.Target),
+			vecty.MarkupIf(len(c.Target) > 0, vecty.Data("target", c.Target)),
 		),
 		c.Markup,
 		elem.Span(
@@ -92,7 +92,7 @@ type NavbarCollapse struct {
 
 // Render ...
 func (c *NavbarCollapse) Render() vecty.ComponentOrHTML {
-	return elem.Button(
+	return elem.Div(
 		vecty.Markup(
 			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
@@ -125,6 +125,30 @@ func (c *NavbarNav) Render() vecty.ComponentOrHTML {
 			vecty.ClassMap{
 				"navbar-nav": true,
 			},
+		),
+		c.Markup,
+		c.Children,
+	)
+}
+
+// NavbarBrand ...
+type NavbarBrand struct {
+	vecty.Core
+	ID       string                `vecty:"prop"`
+	Href     string                `vecty:"prop"`
+	Markup   vecty.MarkupList      `vecty:"prop"`
+	Children vecty.ComponentOrHTML `vecty:"prop"`
+}
+
+// Render ...
+func (c *NavbarBrand) Render() vecty.ComponentOrHTML {
+	return elem.Anchor(
+		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
+			vecty.ClassMap{
+				"navbar-brand": true,
+			},
+			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
 		),
 		c.Markup,
 		c.Children,

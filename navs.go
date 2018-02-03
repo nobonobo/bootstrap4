@@ -117,6 +117,7 @@ func (c *NavLink) Render() vecty.ComponentOrHTML {
 				"active":   c.Active,
 				"disabled": c.Disabled,
 			},
+			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
 			vecty.MarkupIf(len(c.Role) > 0, vecty.Attribute("role", c.Role)),
 			vecty.MarkupIf(len(c.Toggle) > 0, vecty.Data("toggle", c.Toggle)),
 		),
