@@ -3,134 +3,139 @@ package bootstrap4
 import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/prop"
 )
 
 // Modal ...
-type Modal struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func Modal(children ...vecty.MarkupOrChild) vecty.Component {
+	return &modal{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *Modal) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type modal struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *modal) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Attribute("tabindex", -1),
 			vecty.ClassMap{
 				"modal": true,
 			},
 			vecty.Attribute("role", "dialog"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // ModalDialog ...
-type ModalDialog struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Centered bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ModalDialog(children ...vecty.MarkupOrChild) vecty.Component {
+	return &modalDialog{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *ModalDialog) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type modalDialog struct {
+	vecty.Core
+	Centered bool                  `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *modalDialog) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"modal-dialog":          true,
 				"modal-dialog-centered": c.Centered,
 			},
 			vecty.Attribute("role", "document"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // ModalContent ...
-type ModalContent struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ModalContent(children ...vecty.MarkupOrChild) vecty.Component {
+	return &modalContent{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *ModalContent) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type modalContent struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *modalContent) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("modal-content"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // ModalHeader ...
-type ModalHeader struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ModalHeader(children ...vecty.MarkupOrChild) vecty.Component {
+	return &modalHeader{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *ModalHeader) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type modalHeader struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *modalHeader) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("modal-header"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // ModalBody ...
-type ModalBody struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ModalBody(children ...vecty.MarkupOrChild) vecty.Component {
+	return &modalBody{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *ModalBody) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type modalBody struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *modalBody) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("modal-body"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // ModalFooter ...
-type ModalFooter struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ModalFooter(children ...vecty.MarkupOrChild) vecty.Component {
+	return &modalFooter{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *ModalFooter) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type modalFooter struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *modalFooter) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("modal-footer"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }

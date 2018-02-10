@@ -7,111 +7,115 @@ import (
 )
 
 // ListGroup ...
-type ListGroup struct {
+func ListGroup(role string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &listGroup{
+		Role:     role,
+		Children: children,
+	}
+}
+
+type listGroup struct {
 	vecty.Core
-	ID       string                `vecty:"prop"`
 	Role     string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *ListGroup) Render() vecty.ComponentOrHTML {
-	return elem.UnorderedList(
+func (c *listGroup) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.MarkupIf(len(c.Role) > 0, vecty.Attribute("role", c.Role)),
 			vecty.ClassMap{
 				"list-group": true,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.UnorderedList(append(markup, c.Children...)...)
 }
 
 // ListGroupItem ...
-type ListGroupItem struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	ItemKind Kind                  `vecty:"prop"`
-	Role     string                `vecty:"prop"`
-	Active   bool                  `vecty:"prop"`
-	Disabled bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ListGroupItem(kind Kind, role string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &listGroupItem{
+		Kind:     kind,
+		Role:     role,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *ListGroupItem) Render() vecty.ComponentOrHTML {
-	return elem.ListItem(
+type listGroupItem struct {
+	vecty.Core
+	Kind     Kind                  `vecty:"prop"`
+	Role     string                `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *listGroupItem) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.MarkupIf(len(c.Role) > 0, vecty.Attribute("role", c.Role)),
 			vecty.ClassMap{
-				"list-group-item":                        true,
-				"list-group-item-" + c.ItemKind.String(): len(c.ItemKind) > 0,
-				"active":   c.Active,
-				"disabled": c.Disabled,
+				"list-group-item":                    true,
+				"list-group-item-" + c.Kind.String(): len(c.Kind) > 0,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.ListItem(append(markup, c.Children...)...)
 }
 
 // ListGroupAction ...
-type ListGroupAction struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Role     string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ListGroupAction(role string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &listGroupAction{
+		Role:     role,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *ListGroupAction) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type listGroupAction struct {
+	vecty.Core
+	Role     string                `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *listGroupAction) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.MarkupIf(len(c.Role) > 0, vecty.Attribute("role", c.Role)),
 			vecty.ClassMap{
 				"list-group": true,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // ListGroupItemAction ...
-type ListGroupItemAction struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	ItemKind Kind                  `vecty:"prop"`
-	Role     string                `vecty:"prop"`
-	Href     string                `vecty:"prop"`
-	Active   bool                  `vecty:"prop"`
-	Disabled bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ListGroupItemAction(kind Kind, role, href string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &listGroupItemAction{
+		Kind:     kind,
+		Role:     role,
+		Href:     href,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *ListGroupItemAction) Render() vecty.ComponentOrHTML {
-	return elem.Anchor(
+type listGroupItemAction struct {
+	vecty.Core
+	Kind     Kind                  `vecty:"prop"`
+	Role     string                `vecty:"prop"`
+	Href     string                `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *listGroupItemAction) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
 			vecty.MarkupIf(len(c.Role) > 0, vecty.Attribute("role", c.Role)),
 			vecty.ClassMap{
-				"list-group-item":                        true,
-				"list-group-item-" + c.ItemKind.String(): len(c.ItemKind) > 0,
-				"active":   c.Active,
-				"disabled": c.Disabled,
+				"list-group-item":                    true,
+				"list-group-item-" + c.Kind.String(): len(c.Kind) > 0,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Anchor(append(markup, c.Children...)...)
 }

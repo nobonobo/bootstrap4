@@ -3,150 +3,132 @@ package bootstrap4
 import (
 	"github.com/gopherjs/vecty"
 	"github.com/gopherjs/vecty/elem"
-	"github.com/gopherjs/vecty/prop"
 )
 
 // ButtonToolbar ...
-type ButtonToolbar struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ButtonToolbar(children ...vecty.MarkupOrChild) vecty.Component {
+	return &buttonToolbar{Children: children}
 }
 
-// Render ...
-func (c *ButtonToolbar) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type buttonToolbar struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *buttonToolbar) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("btn-toolbar"),
 			vecty.Attribute("role", "toolbar"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // ButtonGroup ...
-type ButtonGroup struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Large    bool                  `vecty:"prop"`
-	Small    bool                  `vecty:"prop"`
-	Vertical bool                  `vecty:"prop"`
-	DropDir  DropDir               `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func ButtonGroup(size Size, vertical bool, dir DropDir, children ...vecty.MarkupOrChild) vecty.Component {
+	return &buttonGroup{
+		Size:     size,
+		Vertical: vertical,
+		DropDir:  dir,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *ButtonGroup) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type buttonGroup struct {
+	vecty.Core
+	Size     Size                  `vecty:"prop"`
+	Vertical bool                  `vecty:"prop"`
+	DropDir  DropDir               `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *buttonGroup) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
-				"btn-group":          !c.Vertical,
-				"btn-group-virtical": c.Vertical,
-				"btn-group-lg":       c.Large,
-				"btn-group-sm":       c.Small,
-				c.DropDir.String():   len(c.DropDir) > 0,
+				"btn-group":                    !c.Vertical,
+				"btn-group-virtical":           c.Vertical,
+				"btn-group-" + c.Size.String(): len(c.Size) > 0,
+				c.DropDir.String():             len(c.DropDir) > 0,
 			},
 			vecty.Attribute("role", "group"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // InputGroup ...
-type InputGroup struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Large    bool                  `vecty:"prop"`
-	Small    bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func InputGroup(size Size, children ...vecty.MarkupOrChild) vecty.Component {
+	return &inputGroup{Size: size, Children: children}
 }
 
-// Render ...
-func (c *InputGroup) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type inputGroup struct {
+	vecty.Core
+	Size     Size                  `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *inputGroup) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
-				"input-group":    true,
-				"input-group-lg": c.Large,
-				"input-group-sm": c.Small,
+				"input-group":                    true,
+				"input-group-" + c.Size.String(): len(c.Size) > 0,
 			},
 			vecty.Attribute("role", "group"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // InputGroupPrepend ...
-type InputGroupPrepend struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func InputGroupPrepend(children ...vecty.MarkupOrChild) vecty.Component {
+	return &inputGroupPrepend{Children: children}
 }
 
-// Render ...
-func (c *InputGroupPrepend) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
-			vecty.ClassMap{
-				"input-group-prepend": true,
-			},
-		),
-		c.Markup,
-		c.Children,
-	)
+type inputGroupPrepend struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *inputGroupPrepend) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
+		vecty.Markup(vecty.Class("input-group-prepend")),
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // InputGroupAppend ...
-type InputGroupAppend struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func InputGroupAppend(children ...vecty.MarkupOrChild) vecty.Component {
+	return &inputGroupAppend{Children: children}
 }
 
-// Render ...
-func (c *InputGroupAppend) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
-			vecty.ClassMap{
-				"input-group-append": true,
-			},
-		),
-		c.Markup,
-		c.Children,
-	)
+type inputGroupAppend struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *inputGroupAppend) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
+		vecty.Markup(vecty.Class("input-group-append")),
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // InputGroupText ...
-type InputGroupText struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func InputGroupText(children ...vecty.MarkupOrChild) vecty.Component {
+	return &inputGroupText{Children: children}
 }
 
-// Render ...
-func (c *InputGroupText) Render() vecty.ComponentOrHTML {
-	return elem.Div(
-		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
-			vecty.ClassMap{
-				"input-group-text": true,
-			},
-		),
-		c.Markup,
-		c.Children,
-	)
+type inputGroupText struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *inputGroupText) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
+		vecty.Markup(vecty.Class("input-group-text")),
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }

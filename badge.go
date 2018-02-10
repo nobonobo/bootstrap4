@@ -7,53 +7,62 @@ import (
 )
 
 // Badge ...
-type Badge struct {
+func Badge(kind Kind, pill bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &badge{
+		Kind:     kind,
+		Pill:     pill,
+		Children: children,
+	}
+}
+
+type badge struct {
 	vecty.Core
-	ID       string              `vecty:"prop"`
-	Kind     Kind                `vecty:"prop"`
-	Pill     bool                `vecty:"prop"`
-	Markup   vecty.MarkupList    `vecty:"prop"`
-	Children vecty.MarkupOrChild `vecty:"prop"`
+	Kind     Kind                  `vecty:"prop"`
+	Pill     bool                  `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *Badge) Render() vecty.ComponentOrHTML {
-	return elem.Span(
+func (c *badge) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("badge"),
 			vecty.MarkupIf(len(c.Kind) == 0, vecty.Class("badge-"+KindPrimary.String())),
 			vecty.MarkupIf(len(c.Kind) > 0, vecty.Class("badge-"+c.Kind.String())),
 			vecty.MarkupIf(c.Pill, vecty.Class("badge-pill")),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Span(append(markup, c.Children...)...)
 }
 
 // BadgeLinks ...
-type BadgeLinks struct {
+func BadgeLinks(kind Kind, pill bool, href string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &badgeLinks{
+		Kind:     kind,
+		Pill:     pill,
+		Href:     href,
+		Children: children,
+	}
+}
+
+type badgeLinks struct {
 	vecty.Core
-	ID       string              `vecty:"prop"`
-	Kind     Kind                `vecty:"prop"`
-	Href     string              `vecty:"prop"`
-	Pill     bool                `vecty:"prop"`
-	Markup   vecty.MarkupList    `vecty:"prop"`
-	Children vecty.MarkupOrChild `vecty:"prop"`
+	Kind     Kind                  `vecty:"prop"`
+	Href     string                `vecty:"prop"`
+	Pill     bool                  `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *BadgeLinks) Render() vecty.ComponentOrHTML {
-	return elem.Anchor(
+func (c *badgeLinks) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("badge"),
 			vecty.MarkupIf(len(c.Kind) == 0, vecty.Class("badge-"+KindPrimary.String())),
 			vecty.MarkupIf(len(c.Kind) > 0, vecty.Class("badge-"+c.Kind.String())),
 			vecty.MarkupIf(c.Pill, vecty.Class("badge-pill")),
 			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Anchor(append(markup, c.Children...)...)
 }

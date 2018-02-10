@@ -7,47 +7,55 @@ import (
 )
 
 // Card ...
-type Card struct {
-	vecty.Core
-	ID             string                `vecty:"prop"`
-	BackgroundKind Kind                  `vecty:"prop"`
-	BorderKind     Kind                  `vecty:"prop"`
-	Markup         vecty.MarkupList      `vecty:"prop"`
-	Children       vecty.ComponentOrHTML `vecty:"prop"`
+func Card(back, border Kind, children ...vecty.MarkupOrChild) vecty.Component {
+	return &card{
+		BackgroundKind: back,
+		BorderKind:     border,
+		Children:       children,
+	}
 }
 
-// Render ...
-func (c *Card) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type card struct {
+	vecty.Core
+	BackgroundKind Kind                  `vecty:"prop"`
+	BorderKind     Kind                  `vecty:"prop"`
+	Children       []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *card) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"card": true,
 				"bg-" + c.BackgroundKind.String(): len(c.BackgroundKind) > 0,
 				"border-" + c.BorderKind.String(): len(c.BorderKind) > 0,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // CardHeader ...
-type CardHeader struct {
+func CardHeader(back, border, text Kind, children ...vecty.MarkupOrChild) vecty.Component {
+	return &cardHeader{
+		BackgroundKind: back,
+		BorderKind:     border,
+		TextKind:       text,
+		Children:       children,
+	}
+}
+
+type cardHeader struct {
 	vecty.Core
-	ID             string                `vecty:"prop"`
 	BackgroundKind Kind                  `vecty:"prop"`
 	BorderKind     Kind                  `vecty:"prop"`
 	TextKind       Kind                  `vecty:"prop"`
-	Markup         vecty.MarkupList      `vecty:"prop"`
-	Children       vecty.ComponentOrHTML `vecty:"prop"`
+	Children       []vecty.MarkupOrChild `vecty:"prop"`
 }
 
-// Render ...
-func (c *CardHeader) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+func (c *cardHeader) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"card-header":                     true,
 				"bg-" + c.BackgroundKind.String(): len(c.BackgroundKind) > 0,
@@ -55,27 +63,31 @@ func (c *CardHeader) Render() vecty.ComponentOrHTML {
 				"text-" + c.TextKind.String():     len(c.TextKind) > 0,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // CardBody ...
-type CardBody struct {
+func CardBody(back, border, text Kind, children ...vecty.MarkupOrChild) vecty.Component {
+	return &cardBody{
+		BackgroundKind: back,
+		BorderKind:     border,
+		TextKind:       text,
+		Children:       children,
+	}
+}
+
+type cardBody struct {
 	vecty.Core
-	ID             string                `vecty:"prop"`
 	BackgroundKind Kind                  `vecty:"prop"`
 	BorderKind     Kind                  `vecty:"prop"`
 	TextKind       Kind                  `vecty:"prop"`
-	Markup         vecty.MarkupList      `vecty:"prop"`
-	Children       vecty.ComponentOrHTML `vecty:"prop"`
+	Children       []vecty.MarkupOrChild `vecty:"prop"`
 }
 
-// Render ...
-func (c *CardBody) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+func (c *cardBody) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"card-body":                       true,
 				"bg-" + c.BackgroundKind.String(): len(c.BackgroundKind) > 0,
@@ -83,27 +95,32 @@ func (c *CardBody) Render() vecty.ComponentOrHTML {
 				"text-" + c.TextKind.String():     len(c.TextKind) > 0,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // CardFooter ...
-type CardFooter struct {
+func CardFooter(back, border, text Kind, children ...vecty.MarkupOrChild) vecty.Component {
+	return &cardBody{
+		BackgroundKind: back,
+		BorderKind:     border,
+		TextKind:       text,
+		Children:       children,
+	}
+}
+
+type cardFooter struct {
 	vecty.Core
-	ID             string                `vecty:"prop"`
 	BackgroundKind Kind                  `vecty:"prop"`
 	BorderKind     Kind                  `vecty:"prop"`
 	TextKind       Kind                  `vecty:"prop"`
-	Markup         vecty.MarkupList      `vecty:"prop"`
-	Children       vecty.ComponentOrHTML `vecty:"prop"`
+	Children       []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *CardFooter) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+func (c *cardFooter) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"card-footer":                     true,
 				"bg-" + c.BackgroundKind.String(): len(c.BackgroundKind) > 0,
@@ -111,109 +128,123 @@ func (c *CardFooter) Render() vecty.ComponentOrHTML {
 				"text-" + c.TextKind.String():     len(c.TextKind) > 0,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // CardTitle ...
-type CardTitle struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func CardTitle(children ...vecty.MarkupOrChild) vecty.Component {
+	return &cardTitle{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *CardTitle) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type cardTitle struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *cardTitle) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
-			vecty.Class("card-title"),
+			vecty.ClassMap{
+				"card-title": true,
+			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // CardText ...
-type CardText struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func CardText(children ...vecty.MarkupOrChild) vecty.Component {
+	return &cardText{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *CardText) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type cardText struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *cardText) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
-			vecty.Class("card-text"),
+			vecty.ClassMap{
+				"card-text": true,
+			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // CardImage ...
-type CardImage struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func CardImage(children ...vecty.MarkupOrChild) vecty.Component {
+	return &cardImage{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *CardImage) Render() vecty.ComponentOrHTML {
-	return elem.Image(
+type cardImage struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *cardImage) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
-			vecty.Class("card-img-top"),
+			vecty.ClassMap{
+				"card-img-top": true,
+			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Image(append(markup, c.Children...)...)
 }
 
 // CardLink ...
-type CardLink struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Href     string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func CardLink(href string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &cardLink{
+		Href:     href,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *CardLink) Render() vecty.ComponentOrHTML {
-	return elem.Anchor(
+type cardLink struct {
+	vecty.Core
+	Href     string                `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *cardLink) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("card-link"),
 			prop.Href(c.Href),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Anchor(append(markup, c.Children...)...)
 }
 
 // CardGroup ...
-type CardGroup struct {
+func CardGroup(children ...vecty.MarkupOrChild) vecty.Component {
+	return &cardGroup{
+		Children: children,
+	}
+}
+
+type cardGroup struct {
 	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *CardGroup) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+func (c *cardGroup) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
-			vecty.Class("card-group"),
+			vecty.ClassMap{
+				"card-group": true,
+			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
