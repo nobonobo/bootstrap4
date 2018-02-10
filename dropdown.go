@@ -7,78 +7,86 @@ import (
 )
 
 // DropdownMenu ...
-type DropdownMenu struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	For      string                `vecty:"prop"`
-	Right    bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func DropdownMenu(right bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &dropdownMenu{
+		Right:    right,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *DropdownMenu) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type dropdownMenu struct {
+	vecty.Core
+	Right    bool                  `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *dropdownMenu) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"dropdown-menu":       true,
 				"dropdown-menu-right": c.Right,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // DropdownDivider ...
-type DropdownDivider struct {
+func DropdownDivider() vecty.Component {
+	return &dropdownDivider{}
+}
+
+type dropdownDivider struct {
 	vecty.Core
 }
 
-// Render ...
-func (c *DropdownDivider) Render() vecty.ComponentOrHTML {
+func (c *dropdownDivider) Render() vecty.ComponentOrHTML {
 	return elem.Div(vecty.Markup(vecty.Class("dropdown-divider")))
 }
 
 // DropdownLinkItem ...
-type DropdownLinkItem struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Href     string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func DropdownLinkItem(href string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &dropdownLinkItem{
+		Href:     href,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *DropdownLinkItem) Render() vecty.ComponentOrHTML {
-	return elem.Anchor(
+type dropdownLinkItem struct {
+	vecty.Core
+	Href     string                `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *dropdownLinkItem) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
 			vecty.Class("dropdown-item"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Anchor(append(markup, c.Children...)...)
 }
 
 // DropdownHeader ...
-type DropdownHeader struct {
+func DropdownHeader(children ...vecty.MarkupOrChild) vecty.Component {
+	return &dropdownHeader{
+		Children: children,
+	}
+}
+
+type dropdownHeader struct {
 	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *DropdownHeader) Render() vecty.ComponentOrHTML {
-	return elem.Heading6(
+func (c *dropdownHeader) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("dropdown-header"),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Heading6(append(markup, c.Children...)...)
 }

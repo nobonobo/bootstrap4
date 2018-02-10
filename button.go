@@ -6,113 +6,78 @@ import (
 	"github.com/gopherjs/vecty/prop"
 )
 
+// ButtonProp ...
+type ButtonProp struct {
+	Kind    Kind
+	Size    Size
+	Outline bool
+	Block   bool
+	Toggle  string
+}
+
+// Markup ...
+func (c ButtonProp) Markup() vecty.MarkupList {
+	if len(c.Kind) == 0 {
+		c.Kind = KindPrimary
+	}
+	return vecty.Markup(
+		vecty.ClassMap{
+			"btn":                            true,
+			"btn-block":                      c.Block,
+			"btn-" + c.Kind.String():         !c.Outline,
+			"btn-outline-" + c.Kind.String(): c.Outline,
+			"btn-" + c.Size.String():         len(c.Size) > 0,
+			"dropdown-toggle":                len(c.Toggle) > 0,
+		},
+		vecty.MarkupIf(len(c.Toggle) > 0, vecty.Data("toggle", c.Toggle)),
+	)
+}
+
 // Button ...
-type Button struct {
+func Button(prop ButtonProp, children ...vecty.MarkupOrChild) vecty.Component {
+	return &button{
+		Prop:     prop,
+		Children: children,
+	}
+}
+
+type button struct {
 	vecty.Core
-	Kind     Kind                  `vecty:"prop"`
-	Type     prop.InputType        `vecty:"prop"`
-	ID       string                `vecty:"prop"`
-	Name     string                `vecty:"prop"`
-	Value    string                `vecty:"prop"`
-	Title    string                `vecty:"prop"`
-	TabIndex int                   `vecty:"prop"`
-	Active   bool                  `vecty:"prop"`
-	Outline  bool                  `vecty:"prop"`
-	Large    bool                  `vecty:"prop"`
-	Small    bool                  `vecty:"prop"`
-	Block    bool                  `vecty:"prop"`
-	Disabled bool                  `vecty:"prop"`
-	Checked  bool                  `vecty:"prop"`
-	Toggle   string                `vecty:"prop"`
-	Target   string                `vecty:"prop"`
-	Dismiss  string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+	Prop     ButtonProp            `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *Button) Render() vecty.ComponentOrHTML {
-	if len(c.Kind) == 0 {
-		c.Kind = KindPrimary
+func (c *button) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
+		c.Prop.Markup(),
 	}
-	return elem.Button(
-		vecty.Markup(
-			vecty.MarkupIf(len(c.Type) == 0, prop.Type(prop.TypeButton)),
-			vecty.MarkupIf(len(c.Type) > 0, prop.Type(c.Type)),
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
-			vecty.MarkupIf(len(c.Name) > 0, vecty.Attribute("name", c.Name)),
-			vecty.MarkupIf(len(c.Value) > 0, prop.Value(c.Value)),
-			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
-			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
-			vecty.ClassMap{
-				"btn":             true,
-				"btn-lg":          c.Large,
-				"btn-sm":          c.Small,
-				"btn-block":       c.Block,
-				"active":          c.Active,
-				"dropdown-toggle": c.Toggle == "dropdown",
-			},
-			vecty.MarkupIf(!c.Outline, vecty.Class("btn-"+c.Kind.String())),
-			vecty.MarkupIf(c.Outline, vecty.Class("btn-outline-"+c.Kind.String())),
-			vecty.MarkupIf(c.Disabled, vecty.Attribute("disabled", nil)),
-			vecty.MarkupIf(len(c.Toggle) > 0, vecty.Data("toggle", c.Toggle)),
-			vecty.MarkupIf(len(c.Target) > 0, vecty.Data("target", c.Target)),
-			vecty.MarkupIf(len(c.Dismiss) > 0, vecty.Data("dismiss", c.Dismiss)),
-		),
-		c.Markup,
-		c.Children,
-	)
+	return elem.Button(append(markup, c.Children...)...)
 }
 
-// ButtonLinks ...
-type ButtonLinks struct {
+// ButtonLink ...
+func ButtonLink(prop ButtonProp, href string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &buttonLink{
+		Prop:     prop,
+		Children: children,
+	}
+}
+
+type buttonLink struct {
 	vecty.Core
-	Kind         Kind                  `vecty:"prop"`
-	Href         string                `vecty:"prop"`
-	ID           string                `vecty:"prop"`
-	Title        string                `vecty:"prop"`
-	TabIndex     int                   `vecty:"prop"`
-	Outline      bool                  `vecty:"prop"`
-	Large        bool                  `vecty:"prop"`
-	Small        bool                  `vecty:"prop"`
-	Block        bool                  `vecty:"prop"`
-	Disabled     bool                  `vecty:"prop"`
-	Checked      bool                  `vecty:"prop"`
-	WithDropdown bool                  `vecty:"prop"`
-	Toggle       string                `vecty:"prop"`
-	Target       string                `vecty:"prop"`
-	Dismiss      string                `vecty:"prop"`
-	Markup       vecty.MarkupList      `vecty:"prop"`
-	Children     vecty.ComponentOrHTML `vecty:"prop"`
+	Prop     ButtonProp            `vecty:"prop"`
+	Href     string                `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *ButtonLinks) Render() vecty.ComponentOrHTML {
-	if len(c.Kind) == 0 {
-		c.Kind = KindPrimary
-	}
-	return elem.Anchor(
+func (c *buttonLink) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
+		c.Prop.Markup(),
 		vecty.Markup(
-			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
-			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
-			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
-			vecty.ClassMap{
-				"btn":             true,
-				"btn-lg":          c.Large,
-				"btn-sm":          c.Small,
-				"btn-block":       c.Block,
-				"disabled":        c.Disabled,
-				"dropdown-toggle": c.Toggle == "dropdown",
-			},
-			vecty.MarkupIf(!c.Outline, vecty.Class("btn-"+c.Kind.String())),
-			vecty.MarkupIf(c.Outline, vecty.Class("btn-outline-"+c.Kind.String())),
+			prop.Href(c.Href),
 			vecty.Attribute("role", "button"),
-			vecty.MarkupIf(len(c.Toggle) > 0, vecty.Data("toggle", c.Toggle)),
-			vecty.MarkupIf(len(c.Target) > 0, vecty.Data("target", c.Target)),
-			vecty.MarkupIf(len(c.Dismiss) > 0, vecty.Data("dismiss", c.Dismiss)),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Anchor(append(markup, c.Children...)...)
 }

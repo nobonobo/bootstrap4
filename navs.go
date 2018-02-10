@@ -7,23 +7,30 @@ import (
 )
 
 // NavList ...
-type NavList struct {
+func NavList(role string, tabs, pills, fill, justified bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &navList{
+		Role:      role,
+		Tabs:      tabs,
+		Pills:     pills,
+		Fill:      fill,
+		Justified: justified,
+		Children:  children,
+	}
+}
+
+type navList struct {
 	vecty.Core
-	ID        string                `vecty:"prop"`
 	Role      string                `vecty:"prop"`
 	Tabs      bool                  `vecty:"prop"`
 	Pills     bool                  `vecty:"prop"`
 	Fill      bool                  `vecty:"prop"`
 	Justified bool                  `vecty:"prop"`
-	Markup    vecty.MarkupList      `vecty:"prop"`
-	Children  vecty.ComponentOrHTML `vecty:"prop"`
+	Children  []vecty.MarkupOrChild `vecty:"prop"`
 }
 
-// Render ...
-func (c *NavList) Render() vecty.ComponentOrHTML {
-	return elem.UnorderedList(
+func (c *navList) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"nav":           true,
 				"nav-tabs":      c.Tabs,
@@ -33,54 +40,62 @@ func (c *NavList) Render() vecty.ComponentOrHTML {
 			},
 			vecty.MarkupIf(len(c.Role) > 0, vecty.Attribute("role", c.Role)),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.UnorderedList(append(markup, c.Children...)...)
 }
 
 // NavItem ...
-type NavItem struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Active   bool                  `vecty:"prop"`
-	Dropdown bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func NavItem(active, dropdown bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &navItem{
+		Active:   active,
+		Dropdown: dropdown,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *NavItem) Render() vecty.ComponentOrHTML {
-	return elem.ListItem(
+type navItem struct {
+	vecty.Core
+	Active   bool                  `vecty:"prop"`
+	Dropdown bool                  `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *navItem) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"nav-item": true,
 				"active":   c.Active,
 				"dropdown": c.Dropdown,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.ListItem(append(markup, c.Children...)...)
 }
 
 // Nav ...
-type Nav struct {
+func Nav(tabs, pills, fill, justified bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &nav{
+		Tabs:      tabs,
+		Pills:     pills,
+		Fill:      fill,
+		Justified: justified,
+		Children:  children,
+	}
+}
+
+type nav struct {
 	vecty.Core
-	ID        string                `vecty:"prop"`
 	Tabs      bool                  `vecty:"prop"`
 	Pills     bool                  `vecty:"prop"`
 	Fill      bool                  `vecty:"prop"`
 	Justified bool                  `vecty:"prop"`
-	Markup    vecty.MarkupList      `vecty:"prop"`
-	Children  vecty.ComponentOrHTML `vecty:"prop"`
+	Children  []vecty.MarkupOrChild `vecty:"prop"`
 }
 
-// Render ...
-func (c *Nav) Render() vecty.ComponentOrHTML {
-	return elem.Navigation(
+func (c *nav) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"nav":           true,
 				"nav-tabs":      c.Tabs,
@@ -89,29 +104,35 @@ func (c *Nav) Render() vecty.ComponentOrHTML {
 				"nav-justified": c.Justified,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Navigation(append(markup, c.Children...)...)
 }
 
 // NavLink ...
-type NavLink struct {
+func NavLink(href, toggle, role string, active, disabled bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &navLink{
+		Href:     href,
+		Toggle:   toggle,
+		Role:     role,
+		Active:   active,
+		Disabled: disabled,
+		Children: children,
+	}
+}
+
+type navLink struct {
 	vecty.Core
-	ID       string                `vecty:"prop"`
 	Href     string                `vecty:"prop"`
 	Toggle   string                `vecty:"prop"`
 	Role     string                `vecty:"prop"`
 	Active   bool                  `vecty:"prop"`
 	Disabled bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
-// Render ...
-func (c *NavLink) Render() vecty.ComponentOrHTML {
-	return elem.Anchor(
+func (c *navLink) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"nav-link": true,
 				"active":   c.Active,
@@ -121,7 +142,6 @@ func (c *NavLink) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.Role) > 0, vecty.Attribute("role", c.Role)),
 			vecty.MarkupIf(len(c.Toggle) > 0, vecty.Data("toggle", c.Toggle)),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Anchor(append(markup, c.Children...)...)
 }

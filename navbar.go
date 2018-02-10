@@ -9,9 +9,21 @@ import (
 )
 
 // Navbar ...
-type Navbar struct {
+func Navbar(size Size, expand, light, dark, stickytop, fixedtop, fixedbottom bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &navbar{
+		Size:        size,
+		Expand:      expand,
+		Light:       light,
+		Dark:        dark,
+		StickyTop:   stickytop,
+		FixedTop:    fixedtop,
+		FixedBottom: fixedbottom,
+		Children:    children,
+	}
+}
+
+type navbar struct {
 	vecty.Core
-	ID          string                `vecty:"prop"`
 	Size        Size                  `vecty:"prop"`
 	Expand      bool                  `vecty:"prop"`
 	Light       bool                  `vecty:"prop"`
@@ -19,15 +31,12 @@ type Navbar struct {
 	StickyTop   bool                  `vecty:"prop"`
 	FixedTop    bool                  `vecty:"prop"`
 	FixedBottom bool                  `vecty:"prop"`
-	Markup      vecty.MarkupList      `vecty:"prop"`
-	Children    vecty.ComponentOrHTML `vecty:"prop"`
+	Children    []vecty.MarkupOrChild `vecty:"prop"`
 }
 
-// Render ...
-func (c *Navbar) Render() vecty.ComponentOrHTML {
-	return elem.Navigation(
+func (c *navbar) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"navbar":                           true,
 				"navbar-" + c.Size.String():        !c.Expand && len(c.Size) > 0,
@@ -41,27 +50,30 @@ func (c *Navbar) Render() vecty.ComponentOrHTML {
 				"fixed-bottom":                     c.FixedBottom,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Navigation(append(markup, c.Children...)...)
 }
 
 // NavbarToggler ...
-type NavbarToggler struct {
-	vecty.Core
-	ID     string           `vecty:"prop"`
-	Type   prop.InputType   `vecty:"prop"`
-	Target string           `vecty:"prop"`
-	Light  bool             `vecty:"prop"`
-	Dark   bool             `vecty:"prop"`
-	Markup vecty.MarkupList `vecty:"prop"`
+func NavbarToggler(tp prop.InputType, light, dark bool) vecty.Component {
+	return &navbarToggler{
+		Type:  tp,
+		Light: light,
+		Dark:  dark,
+	}
 }
 
-// Render ...
-func (c *NavbarToggler) Render() vecty.ComponentOrHTML {
-	return elem.Button(
+type navbarToggler struct {
+	vecty.Core
+	Type   prop.InputType `vecty:"prop"`
+	Target string         `vecty:"prop"`
+	Light  bool           `vecty:"prop"`
+	Dark   bool           `vecty:"prop"`
+}
+
+func (c *navbarToggler) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.MarkupIf(len(c.Type) > 0, prop.Type(c.Type)),
 			vecty.ClassMap{
 				"navbar-toggler": true,
@@ -73,28 +85,32 @@ func (c *NavbarToggler) Render() vecty.ComponentOrHTML {
 			vecty.Data("toggle", "collapse"),
 			vecty.MarkupIf(len(c.Target) > 0, vecty.Data("target", c.Target)),
 		),
-		c.Markup,
 		elem.Span(
 			vecty.Markup(vecty.Class("navbar-toggler-icon")),
 		),
-	)
+	}
+	return elem.Button(markup...)
 }
 
 // NavbarCollapse ...
-type NavbarCollapse struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Light    bool                  `vecty:"prop"`
-	Dark     bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func NavbarCollapse(light, dark bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &navbarCollapse{
+		Light:    light,
+		Dark:     dark,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *NavbarCollapse) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type navbarCollapse struct {
+	vecty.Core
+	Light    bool                  `vecty:"prop"`
+	Dark     bool                  `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *navbarCollapse) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"navbar-collapse": true,
 				"collapse":        true,
@@ -104,53 +120,55 @@ func (c *NavbarCollapse) Render() vecty.ComponentOrHTML {
 				"navbar-dark":     c.Dark,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
 
 // NavbarNav ...
-type NavbarNav struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func NavbarNav(children ...vecty.MarkupOrChild) vecty.Component {
+	return &navbarNav{
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *NavbarNav) Render() vecty.ComponentOrHTML {
-	return elem.UnorderedList(
+type navbarNav struct {
+	vecty.Core
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *navbarNav) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"navbar-nav": true,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.UnorderedList(append(markup, c.Children...)...)
 }
 
 // NavbarBrand ...
-type NavbarBrand struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Href     string                `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func NavbarBrand(href string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &navbarBrand{
+		Href:     href,
+		Children: children,
+	}
 }
 
-// Render ...
-func (c *NavbarBrand) Render() vecty.ComponentOrHTML {
-	return elem.Anchor(
+type navbarBrand struct {
+	vecty.Core
+	Href     string                `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *navbarBrand) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
-			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"navbar-brand": true,
 			},
 			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Anchor(append(markup, c.Children...)...)
 }

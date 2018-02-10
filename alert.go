@@ -7,17 +7,23 @@ import (
 )
 
 // Alert ...
-type Alert struct {
+func Alert(kind Kind, dismiss bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &alert{
+		Kind:     kind,
+		Dismiss:  dismiss,
+		Children: children,
+	}
+}
+
+type alert struct {
 	vecty.Core
 	Kind     Kind                  `vecty:"prop"`
 	Dismiss  bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
-// Render ...
-func (c *Alert) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+func (c *alert) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
 			vecty.ClassMap{
 				"alert":                    true,
@@ -25,8 +31,9 @@ func (c *Alert) Render() vecty.ComponentOrHTML {
 			},
 			vecty.Attribute("role", "alert"),
 		),
-		c.Markup,
-		c.Children,
+	}
+	markup = append(markup, c.Children...)
+	markup = append(markup,
 		vecty.If(c.Dismiss,
 			elem.Button(
 				vecty.Markup(
@@ -42,38 +49,50 @@ func (c *Alert) Render() vecty.ComponentOrHTML {
 			),
 		),
 	)
+	return elem.Div(markup...)
 }
 
 // AlertLink ...
-type AlertLink struct {
+func AlertLink(href string, children ...vecty.MarkupOrChild) vecty.Component {
+	return &alertLink{
+		Href:     href,
+		Children: children,
+	}
+}
+
+type alertLink struct {
 	vecty.Core
-	Href     string              `vecty:"prop"`
-	Children vecty.MarkupOrChild `vecty:"prop"`
+	Href     string                `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *AlertLink) Render() vecty.ComponentOrHTML {
-	return elem.Anchor(
+func (c *alertLink) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
 			prop.Href(c.Href),
 			vecty.Class("alert-link"),
 		),
-		c.Children,
-	)
+	}
+	return elem.Anchor(append(markup, c.Children...)...)
 }
 
 // AlertHeading ...
-type AlertHeading struct {
+func AlertHeading(children ...vecty.MarkupOrChild) vecty.Component {
+	return &alertHeading{Children: children}
+}
+
+type alertHeading struct {
 	vecty.Core
-	Children vecty.MarkupOrChild `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
 }
 
 // Render ...
-func (c *AlertHeading) Render() vecty.ComponentOrHTML {
-	return elem.Heading4(
+func (c *alertHeading) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
 			vecty.Class("alert-heading"),
 		),
-		c.Children,
-	)
+	}
+	return elem.Heading4(append(markup, c.Children...)...)
 }

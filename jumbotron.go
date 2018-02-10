@@ -6,24 +6,24 @@ import (
 )
 
 // Jumbotron ...
-type Jumbotron struct {
-	vecty.Core
-	ID       string                `vecty:"prop"`
-	Fluid    bool                  `vecty:"prop"`
-	Markup   vecty.MarkupList      `vecty:"prop"`
-	Children vecty.ComponentOrHTML `vecty:"prop"`
+func Jumbotron(fluid bool, children ...vecty.MarkupOrChild) vecty.Component {
+	return &jumbotron{Fluid: fluid, Children: children}
 }
 
-// Render ...
-func (c *Jumbotron) Render() vecty.ComponentOrHTML {
-	return elem.Div(
+type jumbotron struct {
+	vecty.Core
+	Fluid    bool                  `vecty:"prop"`
+	Children []vecty.MarkupOrChild `vecty:"prop"`
+}
+
+func (c *jumbotron) Render() vecty.ComponentOrHTML {
+	markup := []vecty.MarkupOrChild{
 		vecty.Markup(
 			vecty.ClassMap{
 				"jumbotron":       true,
 				"jumbotron-fluid": c.Fluid,
 			},
 		),
-		c.Markup,
-		c.Children,
-	)
+	}
+	return elem.Div(append(markup, c.Children...)...)
 }
