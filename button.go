@@ -18,8 +18,7 @@ type Button struct {
 	TabIndex int                   `vecty:"prop"`
 	Active   bool                  `vecty:"prop"`
 	Outline  bool                  `vecty:"prop"`
-	Large    bool                  `vecty:"prop"`
-	Small    bool                  `vecty:"prop"`
+	Size     Size                  `vecty:"prop"`
 	Block    bool                  `vecty:"prop"`
 	Disabled bool                  `vecty:"prop"`
 	Checked  bool                  `vecty:"prop"`
@@ -45,12 +44,11 @@ func (c *Button) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
-				"btn":             true,
-				"btn-lg":          c.Large,
-				"btn-sm":          c.Small,
-				"btn-block":       c.Block,
-				"active":          c.Active,
-				"dropdown-toggle": c.Toggle == "dropdown",
+				"btn": true,
+				"btn-" + c.Size.String(): len(c.Size) > 0,
+				"btn-block":              c.Block,
+				"active":                 c.Active,
+				"dropdown-toggle":        c.Toggle == "dropdown",
 			},
 			vecty.MarkupIf(!c.Outline, vecty.Class("btn-"+c.Kind.String())),
 			vecty.MarkupIf(c.Outline, vecty.Class("btn-outline-"+c.Kind.String())),
@@ -73,8 +71,7 @@ type ButtonLinks struct {
 	Title        string                `vecty:"prop"`
 	TabIndex     int                   `vecty:"prop"`
 	Outline      bool                  `vecty:"prop"`
-	Large        bool                  `vecty:"prop"`
-	Small        bool                  `vecty:"prop"`
+	Size         Size                  `vecty:"prop"`
 	Block        bool                  `vecty:"prop"`
 	Disabled     bool                  `vecty:"prop"`
 	Checked      bool                  `vecty:"prop"`
@@ -98,12 +95,11 @@ func (c *ButtonLinks) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
-				"btn":             true,
-				"btn-lg":          c.Large,
-				"btn-sm":          c.Small,
-				"btn-block":       c.Block,
-				"disabled":        c.Disabled,
-				"dropdown-toggle": c.Toggle == "dropdown",
+				"btn": true,
+				"btn-" + c.Size.String(): len(c.Size) > 0,
+				"btn-block":              c.Block,
+				"disabled":               c.Disabled,
+				"dropdown-toggle":        c.Toggle == "dropdown",
 			},
 			vecty.MarkupIf(!c.Outline, vecty.Class("btn-"+c.Kind.String())),
 			vecty.MarkupIf(c.Outline, vecty.Class("btn-outline-"+c.Kind.String())),

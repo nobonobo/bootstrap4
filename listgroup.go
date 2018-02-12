@@ -88,7 +88,7 @@ func (c *ListGroupAction) Render() vecty.ComponentOrHTML {
 type ListGroupItemAction struct {
 	vecty.Core
 	ID       string                `vecty:"prop"`
-	ItemKind Kind                  `vecty:"prop"`
+	Kind     Kind                  `vecty:"prop"`
 	Role     string                `vecty:"prop"`
 	Href     string                `vecty:"prop"`
 	Active   bool                  `vecty:"prop"`
@@ -105,8 +105,8 @@ func (c *ListGroupItemAction) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.Href) > 0, prop.Href(c.Href)),
 			vecty.MarkupIf(len(c.Role) > 0, vecty.Attribute("role", c.Role)),
 			vecty.ClassMap{
-				"list-group-item":                        true,
-				"list-group-item-" + c.ItemKind.String(): len(c.ItemKind) > 0,
+				"list-group-item":                    true,
+				"list-group-item-" + c.Kind.String(): len(c.Kind) > 0,
 				"active":   c.Active,
 				"disabled": c.Disabled,
 			},

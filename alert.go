@@ -9,6 +9,7 @@ import (
 // Alert ...
 type Alert struct {
 	vecty.Core
+	ID       string                `vecty:"prop"`
 	Kind     Kind                  `vecty:"prop"`
 	Dismiss  bool                  `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
@@ -19,6 +20,7 @@ type Alert struct {
 func (c *Alert) Render() vecty.ComponentOrHTML {
 	return elem.Div(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.ClassMap{
 				"alert":                    true,
 				"alert-" + c.Kind.String(): true,
@@ -47,6 +49,7 @@ func (c *Alert) Render() vecty.ComponentOrHTML {
 // AlertLink ...
 type AlertLink struct {
 	vecty.Core
+	ID       string              `vecty:"prop"`
 	Href     string              `vecty:"prop"`
 	Children vecty.MarkupOrChild `vecty:"prop"`
 }
@@ -55,6 +58,7 @@ type AlertLink struct {
 func (c *AlertLink) Render() vecty.ComponentOrHTML {
 	return elem.Anchor(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			prop.Href(c.Href),
 			vecty.Class("alert-link"),
 		),
@@ -65,6 +69,7 @@ func (c *AlertLink) Render() vecty.ComponentOrHTML {
 // AlertHeading ...
 type AlertHeading struct {
 	vecty.Core
+	ID       string              `vecty:"prop"`
 	Children vecty.MarkupOrChild `vecty:"prop"`
 }
 
@@ -72,6 +77,7 @@ type AlertHeading struct {
 func (c *AlertHeading) Render() vecty.ComponentOrHTML {
 	return elem.Heading4(
 		vecty.Markup(
+			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.Class("alert-heading"),
 		),
 		c.Children,

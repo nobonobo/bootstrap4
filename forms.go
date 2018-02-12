@@ -70,8 +70,7 @@ type Input struct {
 	PlaceHolder string                `vecty:"prop"`
 	Title       string                `vecty:"prop"`
 	TabIndex    int                   `vecty:"prop"`
-	Large       bool                  `vecty:"prop"`
-	Small       bool                  `vecty:"prop"`
+	Size        Size                  `vecty:"prop"`
 	Readonly    bool                  `vecty:"prop"`
 	PlainText   bool                  `vecty:"prop"`
 	Markup      vecty.MarkupList      `vecty:"prop"`
@@ -89,11 +88,10 @@ func (c *Input) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
-				"form-control":           c.Type != prop.TypeFile,
-				"form-control-file":      c.Type == prop.TypeFile,
-				"form-control-plaintext": c.PlainText,
-				"form-control-lg":        c.Large,
-				"form-control-sm":        c.Small,
+				"form-control":                    c.Type != prop.TypeFile,
+				"form-control-file":               c.Type == prop.TypeFile,
+				"form-control-plaintext":          c.PlainText,
+				"form-control-" + c.Size.String(): len(c.Size) > 0,
 			},
 			vecty.MarkupIf(len(c.PlaceHolder) > 0,
 				vecty.Attribute("placeholder", c.PlaceHolder),
@@ -119,8 +117,7 @@ type CheckInput struct {
 	Checked  bool                  `vecty:"prop"`
 	Title    string                `vecty:"prop"`
 	TabIndex int                   `vecty:"prop"`
-	Large    bool                  `vecty:"prop"`
-	Small    bool                  `vecty:"prop"`
+	Size     Size                  `vecty:"prop"`
 	Disabled bool                  `vecty:"prop"`
 	NoLabel  bool                  `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
@@ -137,10 +134,9 @@ func (c *CheckInput) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
-				"form-check-input": true,
-				"position-static":  c.NoLabel,
-				"form-control-lg":  c.Large,
-				"form-control-sm":  c.Small,
+				"form-check-input":                true,
+				"position-static":                 c.NoLabel,
+				"form-control-" + c.Size.String(): len(c.Size) > 0,
 			},
 			vecty.MarkupIf(c.Disabled,
 				vecty.Attribute("disabled", ""),
@@ -162,8 +158,7 @@ type TextArea struct {
 	PlaceHolder string                `vecty:"prop"`
 	Title       string                `vecty:"prop"`
 	TabIndex    int                   `vecty:"prop"`
-	Large       bool                  `vecty:"prop"`
-	Small       bool                  `vecty:"prop"`
+	Size        Size                  `vecty:"prop"`
 	Readonly    bool                  `vecty:"prop"`
 	Rows        int                   `vecty:"prop"`
 	Markup      vecty.MarkupList      `vecty:"prop"`
@@ -179,9 +174,8 @@ func (c *TextArea) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
-				"form-control":    true,
-				"form-control-lg": c.Large,
-				"form-control-sm": c.Small,
+				"form-control":                    true,
+				"form-control-" + c.Size.String(): len(c.Size) > 0,
 			},
 			vecty.MarkupIf(len(c.PlaceHolder) > 0,
 				vecty.Attribute("placeholder", c.PlaceHolder),
@@ -205,8 +199,7 @@ type Select struct {
 	Name     string                `vecty:"prop"`
 	Title    string                `vecty:"prop"`
 	TabIndex int                   `vecty:"prop"`
-	Large    bool                  `vecty:"prop"`
-	Small    bool                  `vecty:"prop"`
+	Size     Size                  `vecty:"prop"`
 	Readonly bool                  `vecty:"prop"`
 	Multiple bool                  `vecty:"prop"`
 	Markup   vecty.MarkupList      `vecty:"prop"`
@@ -222,9 +215,8 @@ func (c *Select) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
-				"form-control":    true,
-				"form-control-lg": c.Large,
-				"form-control-sm": c.Small,
+				"form-control":                    true,
+				"form-control-" + c.Size.String(): len(c.Size) > 0,
 			},
 			vecty.MarkupIf(c.Multiple, vecty.Attribute("multiple", "")),
 			vecty.MarkupIf(c.Readonly, vecty.Attribute("readonly", "")),
