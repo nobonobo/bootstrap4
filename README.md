@@ -120,7 +120,7 @@ logging only
 - [x] Modal
 - [x] Navs
 - [x] Navbar
-- [ ] Pagination
+- [x] Pagination
 - [x] Popovers
 - [x] Progress
 - [ ] Scrollspy
