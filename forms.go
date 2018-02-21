@@ -84,7 +84,7 @@ func (c *Input) Render() vecty.ComponentOrHTML {
 			vecty.MarkupIf(len(c.ID) > 0, prop.ID(c.ID)),
 			vecty.MarkupIf(len(c.Type) > 0, prop.Type(c.Type)),
 			vecty.MarkupIf(len(c.Name) > 0, vecty.Attribute("name", c.Name)),
-			vecty.MarkupIf(len(c.Value) > 0, prop.Value(c.Value)),
+			prop.Value(c.Value),
 			vecty.MarkupIf(len(c.Title) > 0, vecty.Attribute("title", c.Title)),
 			vecty.MarkupIf(c.TabIndex != 0, vecty.Attribute("tabindex", c.TabIndex)),
 			vecty.ClassMap{
